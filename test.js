@@ -1,0 +1,2 @@
+let test = ''
+test += 'string';

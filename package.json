@@ -4,7 +4,7 @@
   "description": "Places",
   "scripts": {
     "start": "NODE_ENV=development nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint test.js"
   },
   "repository": {
     "type": "git",
@@ -21,12 +21,11 @@
     "express": "^4.13.4"
   },
   "devDependencies": {
+    "babel-eslint": "^6.0.4",
     "eslint": "^2.12.0",
     "eslint-config-airbnb": "^9.0.1",
-    "eslint-loader": "^1.3.0",
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.3.0",
-    "eslint-plugin-react": "^5.1.1",
     "nodemon": "^1.9.2"
   }
 }
