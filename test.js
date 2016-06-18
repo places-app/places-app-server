@@ -1,4 +1,1 @@
-let test = ''
-test += 'string';
-
-const testing = 0;
+exports.test = num => num + 1;
