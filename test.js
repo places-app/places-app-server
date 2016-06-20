@@ -1,1 +1,1 @@
-exports.test = num => num + 1;
+exports.test = num => num;
