@@ -6,29 +6,34 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const express = require('express');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var session = require('express-session');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const app = express();
 
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(cookieParser());
+
+
 // Configure passport strategy
-require('./config/passport')(app);
+require('./config/passport')(app, passport);
 
 
 // Auth routes
-require('./routes/auth-routes')(app);
+require('./routes/auth-routes')(app, passport);
 
 // API routes
 require('./routes/api-routes')(app);
 
 // Wildcard route
-app.get('*', function(req, res) {
+app.get('*', (req, res) => {
   res.send(404);
 });
 
 app.listen(Number(process.env.PORT), process.env.HOST, () => {
-  console.log('listening *:' + process.env.PORT);
+  console.log(`listening *:${process.env.PORT}`);
 });
