@@ -35,5 +35,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(Number(process.env.PORT), process.env.HOST, () => {
-  console.log(`listening *:${process.env.PORT}`);
+  console.log(`listening *: ${process.env.PORT}`);
 });
