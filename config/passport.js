@@ -12,8 +12,8 @@ module.exports = function passportConfig(app, passport) {
   passport.deserializeUser((user, done) => done(null, user));
 
   passport.use(new FacebookTokenStrategy({
-    clientID: '1171407722880061',
-    clientSecret: '6cde384abc81b47f044b0ee9b1195882',
+    clientID: process.env.FB_CLIENT_ID,
+    clientSecret: process.env.FB_CLIENT_SECRET,
   }, (accessToken, refreshToken, profile, done) => {
     /** this will be replaced with findOrCreate
     */
