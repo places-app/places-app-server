@@ -15,7 +15,7 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
@@ -35,5 +35,7 @@ app.get('*', (req, res) => {
 });
 
 app.listen(Number(process.env.PORT), process.env.HOST, () => {
-  console.log(`listening *: ${process.env.PORT}`);
+  console.log(
+    `${process.env.APP_NAME} is listening at ${process.env.HOST} on port ${process.env.PORT}`
+  );
 });
