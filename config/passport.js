@@ -1,8 +1,15 @@
+// Load environment variables
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config({ path: './env/development.env' });
+} else {
+  require('dotenv').config({ path: './env/production.env' });
+}
+
 const FacebookTokenStrategy = require('passport-facebook-token');
 const session = require('express-session');
 
 module.exports = function passportConfig(app, passport) {
-  app.use(session({ secret: 'pernicious' }));
+  app.use(session({ secret: 'fred', resave: false, saveUninitialized: false }));
 
   app.use(passport.initialize());
   app.use(passport.session());
