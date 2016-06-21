@@ -13,7 +13,7 @@ describe('Routing', function() {
   
   before(function(done) {
     //create the test data 
-    // In our tests we use the test db
+    // In our tests we ue the test db
     //mongoose.connect(config.db.mongodb);              
     done();
   });
@@ -24,6 +24,27 @@ describe('Routing', function() {
   });
 
   describe('Post places', function() {
+    it('should send back a 400 for incomplete info', function(done) {
+      let post = {
+        location: { name: 'Adam Lessen\'s Delicious Burgers', lat: 40, lng: 50 },
+        note: '',
+      };
+   
+      request
+        .post('/api/users/1/places')
+        .send(post)
+          // end handles the response
+        .end(function(err, res) {
+          if (err) {
+            throw err;
+          }
+          // this is should.js syntax, very clear
+          res.should.have.status(400);
+          // query data base to see if that entry exists and verify that the name is the name
+          done();
+        });
+    });
+
     it('should store a new place and send back a 201', function(done) {
       let post = {
         location: { name: 'Adam Lessen\'s Delicious Burgers', lat: 40, lng: 50 },
