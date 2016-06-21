@@ -6,25 +6,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const express = require('express');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const passport = require('passport');
 
 const app = express();
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-
-// Configure passport strategy
-require('./config/passport')(app, passport);
-
+// apply app to use middleware
+require('./config/middleware')(app);
 
 // Auth routes
-require('./routes/auth-routes')(app, passport);
+require('./routes/auth-routes')(app);
 
 // API routes
 require('./routes/api-routes')(app);
