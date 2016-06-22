@@ -37,20 +37,20 @@
   - [here](https://launchschool.com/blog/how-to-install-postgresql-on-a-mac)
 - Before you can start postgres you may need to initialize a data directory.
   - Try to start postgres with: `brew services start postgresql`
-- If it doesn't start, try:
+- If it doesn't start, try these 2 steps:
   - To initialize the data dir run (only needs to be done once):
   - `initdb /path/to/some/dir/pgsql-data/`
-- Then to start the db run:
-  - `pg_ctl -D /path/to/some/dir/pgsql-data/ -l logfile start`
+  - Then to start the db run:
+   - `pg_ctl -D /path/to/some/dir/pgsql-data/ -l logfile start`
 
 #### Create the User and Database
 
 - To interact with the postgres server run:
   - `psql postgres`
 - Create user root with login role attribute
-  - `CREATE USER root`
+  - `CREATE USER root;`
 - Set the password for the root user
-  - `\password root`
+  - `\password root;`
 - When prompted for pass, enter ‘password’.
 - Create the database with root as owner
   - `CREATE DATABASE places OWNER root;`
