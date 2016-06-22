@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Places",
   "scripts": {
-    "start": "NODE_ENV=development nodemon server.js",
+    "start": "NODE_ENV=development nodemon server/server.js",
     "test": "mocha --reporter spec && eslint */*.js",
     "lint": "eslint test.js"
   },
