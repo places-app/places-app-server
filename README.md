@@ -32,13 +32,47 @@
 
 ## Development
 
+### Setting up Postgres
+- Install postgres if you don’t have it:
+  - [here](https://launchschool.com/blog/how-to-install-postgresql-on-a-mac)
+- Before you can start postgres you may need to initialize a data directory.
+  - Try to start postgres with: `brew services start postgresql`
+- If it doesn't start, try:
+  - To initialize the data dir run (only needs to be done once):
+  - `initdb /path/to/some/dir/pgsql-data/`
+- Then to start the db run:
+  - `pg_ctl -D /path/to/some/dir/pgsql-data/ -l logfile start`
+
+#### Create the User and Database
+
+- To interact with the postgres server run:
+  - `psql postgres`
+- Create user root with login role attribute
+  - `CREATE USER root`
+- Set the password for the root user
+  - `\password root`
+- When prompted for pass, enter ‘password’.
+- Create the database with root as owner
+  - `CREATE DATABASE places OWNER root;`
+- Change db to places
+  - `\q` to quit 
+  - `psql places` 
+  
+##### Useful Postgres Commands:
+```
+\list or \l: list all databases
+\dt: list all tables in the current database
+\connect database_name
+\du shows all the users
+```
+
 ### Installing Dependencies
 
 From within the root directory:
 
 ```sh
 npm install
-npm run startdev
+npm run start
 ```
 
 ### Roadmap
