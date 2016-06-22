@@ -18,6 +18,12 @@ require('../routes/auth-routes')(app);
 // API routes
 require('../routes/api-routes')(app);
 
+// Test route for session logging
+app.get('/test', (req, res) => {
+  console.log(req.user);
+  res.send('done').end();
+});
+
 // Wildcard route
 app.get('*', (req, res) => {
   res.send(404);

@@ -29,7 +29,15 @@ passport.use(new FacebookTokenStrategy({
 }));
 
 module.exports = function passportConfig(app) {
-  app.use(session({ secret: 'fred', resave: false, saveUninitialized: false }));
+  app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: 'pernicious',
+    cookie: { httpOnly: false },
+  }));
   app.use(passport.initialize());
   app.use(passport.session());
 };
+
+  // app.use(session({ secret: 'fred', resave: false, saveUninitialized: false }));
+
