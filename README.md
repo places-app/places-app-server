@@ -72,6 +72,7 @@ From within the root directory:
 
 ```sh
 npm install
+npm run seed
 npm run start
 ```
 
