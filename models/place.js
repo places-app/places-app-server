@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Place = sequelize.define('place', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoincrement: true,
-    },
     name: DataTypes.STRING,
     lat: DataTypes.STRING,
     lng: DataTypes.STRING,
@@ -14,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         Place.belongsToMany(models.user, { through: 'userPlaces' },
-          { foreignKey: { name: 'userId', allowNull: false } }
+          { as: 'user', foreignKey: { name: 'userId', allowNull: false } }
         );
         Place.hasMany(models.fav);
       },

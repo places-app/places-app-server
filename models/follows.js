@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Follow = sequelize.define('follow', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoincrement: true,
-    },
     following: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
