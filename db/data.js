@@ -2,7 +2,6 @@ module.exports = [
   {
     user: [
       {
-        id: 1,
         name: 'Sepehr Vakili',
         email: 'sdvakili@gmail.com',
         fbId: '',
@@ -16,7 +15,6 @@ module.exports = [
         repCount: 1,
       },
       {
-        id: 2,
         name: 'Jordan Tepper',
         email: 'jstepper91@gmail.com',
         fbId: '',
@@ -34,7 +32,6 @@ module.exports = [
   {
     place: [
       {
-        id: 1,
         name: 'Mission Dolores Park',
         lat: '37.760061',
         lng: '-122.427020',
@@ -42,7 +39,6 @@ module.exports = [
         pinnedCount: 2,
       },
       {
-        id: 2,
         name: 'Hack Reactor',
         lat: '37.783533',
         lng: '-122.409311',
@@ -54,7 +50,6 @@ module.exports = [
   {
     userPlaces: [
       {
-        id: 1,
         note: 'Hack Reactor is Awesome!',
         imageUrl: 'https://hrhq.squarespace.com/assets/images/school-working@2x.jpg',
         videoUrl: '',
@@ -62,7 +57,6 @@ module.exports = [
         placeId: 2,
       },
       {
-        id: 2,
         note: 'An awesome place to spend your Sundays!',
         imageUrl: 'http://brokeassstuart.com/wp-content/pictsnShit/2014/04/dolores-park.jpg',
         videoUrl: '',
@@ -74,13 +68,11 @@ module.exports = [
   {
     fav: [
       {
-        id: 1,
         starred: true,
         placeId: 1,
         userId: 1,
       },
       {
-        id: 2,
         starred: true,
         placeId: 2,
         userId: 2,
@@ -90,13 +82,11 @@ module.exports = [
   {
     follow: [
       {
-        id: 1,
         following: true,
         userId: 1,
         followedId: 2,
       },
       {
-        id: 2,
         following: true,
         userId: 2,
         followedId: 1,

@@ -9,7 +9,7 @@ data.forEach((table) => {
   entries.forEach((srcEntry) => {
     db[modelName].create(srcEntry)
       .then((dbEntry) => {
-        console.log('Created entry:', dbEntry, ' on ', modelName);
+        console.log('Created an entry on:', modelName, dbEntry.dataValues);
       })
       .catch((error) => {
         console.error('Error:', error);
