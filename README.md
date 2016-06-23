@@ -72,8 +72,8 @@ From within the root directory:
 
 ```sh
 npm install
+npm start
 npm run seed
-npm run start
 ```
 
 ### Roadmap
