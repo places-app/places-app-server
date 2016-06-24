@@ -1,9 +1,11 @@
+const userController = require('../controllers/userController');
 const passport = require('passport');
 
 module.exports = (app) => {
   app.get('/auth/facebook/token', passport.authenticate('facebook-token'), (req, res) => {
-    console.log('User is logged in...', req.user);
-    res.sendStatus(200);
+    userController.getLoginPayLoad(req.user.fbId, payLoad => {
+      res.send(payLoad);
+    });
   });
   app.get('/logout', (req, res) => {
     console.log('Logging out...: ');
