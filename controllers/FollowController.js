@@ -2,7 +2,6 @@ const Follow = require('../models').follow;
 
 exports.followUser = (req, res) => {
   Follow.create({
-    id: 1,
     userId: req.params.userId,
     followedId: req.body.followedId,
     following: true,
