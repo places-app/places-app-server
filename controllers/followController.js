@@ -22,23 +22,23 @@ module.exports = {
         console.log(error);
       });
     } else {
-      Follow.update({
-        following: false,
-        where: {
-          userId: req.params.userId,
-          followedId: req.body.followedId,
-          following: true,
-        },
-      })
-      .then((unfollow) => {
-        console.log(`Successfuly unfollowed user ${unfollow.followedId} 
-          for user ${unfollow.userId}`);
-        res.send(200);
-      })
-      .catch((error) => {
-        // Add error handling and res status
-        console.log(error);
-      });
+      // Follow.update({
+      //   following: false,
+      //   where: {
+      //     userId: req.params.userId,
+      //     followedId: req.body.followedId,
+      //     following: true,
+      //   },
+      // })
+      // .then((unfollow) => {
+      //   console.log(`Successfuly unfollowed user ${unfollow.followedId}
+      //     for user ${unfollow.userId}`);
+      //   res.send(200);
+      // })
+      // .catch((error) => {
+      //   // Add error handling and res status
+      //   console.log(error);
+      // });
     }
   },
   getFollows: (req, res) => {
