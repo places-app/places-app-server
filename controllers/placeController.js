@@ -39,17 +39,14 @@ module.exports = {
   // /api/users/:userId/places return mine and my friends places
   getPlaces: (req, res) => {
     const reqUserId = req.params.userId;
-    let followedIds = [];
     return Follow.findAll({
       where: { userId: reqUserId },
       raw: true, attributes: ['followedId'],
     })
-      .then((data) => {
-        // get all followedIds
-        followedIds = data.map((obj) => obj.followedId);
+      .then((users) => {
+        const followedIds = users.map((obj) => obj.followedId);
         // add current usersId
         followedIds.push(parseInt(reqUserId, 10));
-
         const promiseFuncs = followedIds.map((userId) => {
           const query = {
             where: { userId }, raw: true,
@@ -57,7 +54,6 @@ module.exports = {
           };
           return UserPlace.findAll(query);
         });
-
         return Promise.all(promiseFuncs);
       })
       .then((result) => {
