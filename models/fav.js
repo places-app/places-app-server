@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         Fav.belongsTo(models.place,
           { as: 'place', foreignKey: { name: 'placeId', allowNull: false } }
         );
+        Fav.belongsTo(models.userPlace,
+          { as: 'userPlace', foreignKey: { name: 'userPlaceId', allowNull: false } }
+        );
       },
     },
   });
