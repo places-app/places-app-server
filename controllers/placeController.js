@@ -19,9 +19,6 @@ module.exports = {
         defaults: { lat, lng },
       })
       .spread((place, created) => {
-        console.log(place.get({
-          plain: true,
-        }));
         console.log(created);
         UserPlace // --- upsert
           .findOrCreate({
@@ -29,10 +26,9 @@ module.exports = {
             defaults: { userId, note, videoUrl: '', pictureUrl: '' },
           })
           .spread((userPlace, newEntry) => {
-            console.log('DID I MAKE IT HERE---------------');
-            console.log('newEntry---------------', newEntry);
             return newEntry ? res.send(201) : res.send(202);
-          });
+          }
+          );
       });
   },
 
