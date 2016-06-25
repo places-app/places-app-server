@@ -78,7 +78,24 @@ module.exports = {
         return Promise.all(promiseFuncs);
       })
       .then((results) => {
-        res.end(JSON.stringify(results));
+        const data = results.map((result) => {
+          const entry = {
+            userPlaceId: result.id,
+            userId: result.userId,
+            userName: result['user.name'],
+            placeId: result.placeId,
+            name: result['place.name'],
+            lat: result['place.lat'],
+            lng: result['place.lng'],
+            favsCount: result['place.favsCount'],
+            pinnedCount: result['place.pinnedCount'],
+            videoUrl: result.videoUrl,
+            imageUrl: result.imageUrl,
+            note: result.note,
+          };
+          return entry;
+        });
+        res.end(JSON.stringify(data));
       })
       .catch((err) => {
         throw new Error(err);
