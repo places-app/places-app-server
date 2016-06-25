@@ -1,7 +1,8 @@
-const User = require('../models').user;
+const db = require('../models');
+const User = db.user;
 
 module.exports = {
-  getUser: (fbId) => {
+  getUser: function getUser(fbId) {
     return User.findOne({ where: { fbId } })
       .then((user) => {
         if (user) {
@@ -13,7 +14,7 @@ module.exports = {
         throw new Error(err);
       });
   },
-  addUser: (user) => {
+  addUser: function addUser(user) {
     return User.create(user)
       .then((createdUser) => createdUser)
       .catch((err) => {
