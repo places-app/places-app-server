@@ -12,7 +12,7 @@ data.forEach((table) => {
         console.log('Created an entry on:', modelName, dbEntry.dataValues);
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error('Error when adding:', modelName, error);
       });
   });
 });
