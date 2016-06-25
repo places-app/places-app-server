@@ -4,21 +4,44 @@ const User = require('../models').user;
 module.exports = {
   followUser: (req, res) => {
     // add unfollow
-    Follow.findOrCreate({
-      where: {
-        userId: req.params.userId,
-        followedId: req.body.followedId,
-        following: true,
-      },
-    })
-    .then((follow) => {
-      console.log(`Successfuly inserted into Follows table for user ${follow.userId}`);
-      res.send(200);
-    })
-    .catch((error) => {
-      // Add error handling and res status
-      console.log(error);
-    });
+    const where = {
+      userId: req.params.userId,
+      followedId: req.body.followedId,
+    };
+
+    const values = {
+      userId: req.params.userId,
+      followedId: req.body.followedId,
+      following: true,
+    };
+    if (req.body.followed) {
+      Follow.upsert(values, where)
+      .then((follow) => {
+        console.log(`Successfuly followed user ${follow.followedId} for user ${follow.userId}`);
+        res.send(200);
+      })
+      .catch((error) => {
+        // Add error handling and res status
+        console.log(error);
+      });
+    } else {
+      Follow.update({
+        where: {
+          userId: req.params.userId,
+          followedId: req.body.followedId,
+          following: false,
+        },
+      })
+      .then((unfollow) => {
+        console.log(`Successfuly unfollowed user ${unfollow.followedId} 
+          for user ${unfollow.userId}`);
+        res.send(200);
+      })
+      .catch((error) => {
+        // Add error handling and res status
+        console.log(error);
+      });
+    }
   },
   getFollows: (req, res) => {
     Follow.findAll({
