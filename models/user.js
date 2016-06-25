@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        User.belongsToMany(models.place, { through: 'userPlaces' },
+        User.belongsToMany(models.place,
+          { through: { model: 'userPlace', unique: false } },
           { as: 'place', foreignKey: { name: 'placeId', allowNull: false } }
         );
         User.hasMany(models.fav);

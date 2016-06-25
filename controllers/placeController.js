@@ -1,5 +1,5 @@
 const Places = require('../models').place;
-const UserPlaces = require('../models').userPlaces;
+const UserPlace = require('../models').userPlace;
 
 module.exports = {
   insertPlace: (req, res) => {
@@ -20,7 +20,7 @@ module.exports = {
           plain: true,
         }));
         console.log(created);
-        UserPlaces // --- upsert
+        UserPlace // --- upsert
           .findOrCreate({
             where: { placeId: place.id },
             defaults: { userId, note, videoUrl: '', pictureUrl: '' },
@@ -31,5 +31,8 @@ module.exports = {
             return newEntry ? res.send(201) : res.send(202);
           });
       });
+  },
+  getPlaces: (req, res) => {
+    // this will be added
   },
 };
