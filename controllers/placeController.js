@@ -1,5 +1,8 @@
 const Places = require('../models').place;
 const UserPlace = require('../models').userPlace;
+const User = require('../models').user;
+const Follow = require('../models').follow;
+const _ = require('lodash');
 
 module.exports = {
   insertPlace: (req, res) => {
@@ -32,7 +35,53 @@ module.exports = {
           });
       });
   },
+
+  // /api/users/:userId/places return mine and my friends places
   getPlaces: (req, res) => {
-    // this will be added
+    const reqUserId = req.params.userId;
+    let followedIds = [];
+    return Follow.findAll({
+      where: { userId: reqUserId },
+      raw: true, attributes: ['followedId'],
+    })
+      .then((data) => {
+        // get all followedIds
+        followedIds = data.map((obj) => obj.followedId);
+        // add current usersId
+        followedIds.push(parseInt(reqUserId, 10));
+
+        const promiseFuncs = followedIds.map((userId) => {
+          const query = {
+            where: { userId }, raw: true,
+            attributes: ['userId', 'placeId'],
+          };
+          return UserPlace.findAll(query);
+        });
+
+        return Promise.all(promiseFuncs);
+      })
+      .then((result) => {
+        const userPlaces = _.flattenDeep(result);
+        const promiseFuncs = userPlaces.map((userPlace) => {
+          const query = {
+            include: [{
+              model: User,
+              where: { id: userPlace.userId },
+            }, {
+              model: Places,
+              where: { id: userPlace.placeId },
+            }],
+            raw: true,
+          };
+          return UserPlace.findOne(query);
+        });
+        return Promise.all(promiseFuncs);
+      })
+      .then((results) => {
+        res.end(JSON.stringify(results));
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   },
 };
