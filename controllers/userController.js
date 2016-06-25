@@ -21,22 +21,23 @@ module.exports = {
         throw new Error(err);
       });
   },
-  getLoginPayLoad: function getUser(fbId, cb) {
-    return User.findOne({ where: { fbId } })
+  getLoginPayLoad: function getUser(req, res) {
+    const fbId = req.user.fbId;
+    return User.findOne({ where: { fbId }, raw: true })
       .then((user) => {
         if (user) {
           const payLoad = {
-            id: user.dataValues.id,
-            imageUrl: user.dataValues.imageUrl,
-            name: user.dataValues.name,
-            repCount: user.dataValues.repCount,
-            email: user.dataValues.email,
-            currLat: user.dataValues.currLat,
-            currLng: user.dataValues.currLng,
-            prevLat: user.dataValues.prevLat,
-            prevLng: user.dataValues.prevLng,
+            id: user.id,
+            imageUrl: user.imageUrl,
+            name: user.name,
+            repCount: user.repCount,
+            email: user.email,
+            currLat: user.currLat,
+            currLng: user.currLng,
+            prevLat: user.prevLat,
+            prevLng: user.prevLng,
           };
-          cb(payLoad);
+          res.end(JSON.stringify(payLoad));
         }
       })
       .catch((err) => {

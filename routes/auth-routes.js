@@ -3,9 +3,7 @@ const passport = require('passport');
 
 module.exports = (app) => {
   app.get('/auth/facebook/token', passport.authenticate('facebook-token'), (req, res) => {
-    userController.getLoginPayLoad(req.user.fbId, payLoad => {
-      res.send(payLoad);
-    });
+    userController.getLoginPayLoad(req, res);
   });
   app.get('/logout', (req, res) => {
     console.log('Logging out...: ');
