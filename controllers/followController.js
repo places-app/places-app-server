@@ -4,19 +4,16 @@ const User = require('../models').user;
 module.exports = {
   followUser: (req, res) => {
     // add unfollow
-    const where = {
-      userId: req.params.userId,
-      followedId: req.body.followedId,
-    };
-
-    const values = {
-      userId: req.params.userId,
-      followedId: req.body.followedId,
-      following: true,
-    };
-    if (req.body.followed) {
-      Follow.upsert(values, where)
-      .then((follow) => {
+    if (!req.body.followed) {
+      Follow.findOrCreate({
+        where: {
+          userId: req.params.userId,
+          followedId: req.body.followedId,
+          following: true,
+        },
+      })
+      .spread((follow, created) => {
+        console.log(created);
         console.log(`Successfuly followed user ${follow.followedId} for user ${follow.userId}`);
         res.send(200);
       })
@@ -26,10 +23,11 @@ module.exports = {
       });
     } else {
       Follow.update({
+        following: false,
         where: {
           userId: req.params.userId,
           followedId: req.body.followedId,
-          following: false,
+          following: true,
         },
       })
       .then((unfollow) => {
