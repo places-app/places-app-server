@@ -95,7 +95,7 @@ module.exports = [
         imageUrl: 'http://static1.squarespace.com/static/522a22cbe4b04681b0bff826/t/551c5d9de4b0a9acf950d931/1427922333851/Coder-photo.jpg',
         videoUrl: '',
         userId: 3,
-        placeId: 1,
+        placeId: 2,
       },
     ],
   },
