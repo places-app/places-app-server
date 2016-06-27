@@ -21,12 +21,12 @@ module.exports = {
         throw new Error(err);
       });
   },
-  getLoginPayLoad: function getUser(req, res) {
+  getLoginPayload: function getLoginPayload(req, res) {
     const fbId = req.user.fbId;
-    return User.findOne({ where: { fbId }, raw: true })
+    User.findOne({ where: { fbId }, raw: true })
       .then((user) => {
         if (user) {
-          const payLoad = {
+          const payload = {
             id: user.id,
             imageUrl: user.imageUrl,
             name: user.name,
@@ -37,7 +37,7 @@ module.exports = {
             prevLat: user.prevLat,
             prevLng: user.prevLng,
           };
-          res.end(JSON.stringify(payLoad));
+          res.end(JSON.stringify(payload));
         }
       })
       .catch((err) => {
