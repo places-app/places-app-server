@@ -35,4 +35,10 @@ module.exports = {
       throw new Error(err);
     });
   },
+  updateLocation: function updateLocation(req, res) {
+    console.log('req.body.location-----------------', req.body.location);
+    console.log('req.params----------', req.params);
+    console.log('req.headers----------', req.headers);
+    res.send(200);
+  },
 };
