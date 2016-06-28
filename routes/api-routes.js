@@ -22,6 +22,7 @@ module.exports = (app) => {
   // users and follows
   app.get('/api/users/:userId/follows', ensureAuthenticated, followController.getFollows);
   app.post('/api/users/:userId/follows', ensureAuthenticated, followController.followUser);
+  app.get('/api/follows/:followedId/places', ensureAuthenticated, followController.getFollowPlaces);
   app.get('/api/users', ensureAuthenticated, usersController.getUsers);
 
   // favs
