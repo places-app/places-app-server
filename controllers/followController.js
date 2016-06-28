@@ -13,6 +13,14 @@ module.exports = {
           followedId: req.body.followedId,
           following: true,
         },
+        // only for find <-- remove
+        include: [{
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'currLat', 'currLng',
+          'prevLat', 'prevLng', 'repCount'],
+        }],
+        // only for find
         raw: true,
       })
       .spread((follow, created) => {
@@ -22,13 +30,29 @@ module.exports = {
           });
           console.log(`Successfuly followed user ${followRaw.followedId} 
             for user ${followRaw.userId}`);
-          res.status(200).send(followRaw);
+          User.find({
+            where: {
+              id: followRaw.followedId,
+            },
+            attributes: ['id', 'name', 'currLat', 'currLng',
+            'prevLat', 'prevLng', 'repCount'],
+            raw: true,
+          })
+          .then(followed => {
+            res.status(200).send(followed);
+          })
+          .catch(error => {
+            console.log(error);
+            res.status(500).send();
+          });
+        // only for find <-- remove when unfollow is implemented
         } else {
           console.log(`Successfuly followed user ${follow.followedId} for user ${follow.userId}`);
+          console.log(follow);
           res.status(200).send(follow);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         res.status(500).send();
       });
@@ -60,9 +84,9 @@ module.exports = {
       },
       raw: true,
     })
-    .then((follows) => {
+    .then(follows => {
       const allFollows = [];
-      follows.forEach((follow) => {
+      follows.forEach(follow => {
         allFollows.push(follow.followedId);
       });
       User.findAll({
@@ -72,11 +96,11 @@ module.exports = {
         attributes: ['id', 'name', 'currLat', 'currLng', 'prevLat', 'prevLng', 'repCount'],
         raw: true,
       })
-      .then((followedUsers) => {
+      .then(followedUsers => {
         console.log(`Successfuly fetched followed users for user ${req.params.userId}`);
         res.status(200).send(followedUsers);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         res.status(500).send();
       });
@@ -87,18 +111,39 @@ module.exports = {
       where: {
         userId: req.params.followedId,
       },
-      attributes: ['videoUrl', 'imageUrl', 'note'],
+      attributes: ['id', 'userId', 'placeId', 'videoUrl', 'imageUrl', 'note'],
       include: [{
         model: Place,
-        attributes: ['id', 'name', 'lat', 'lng', 'favsCount', 'pinnedCount'],
+        attributes: ['name', 'lat', 'lng', 'favsCount', 'pinnedCount'],
+      },
+      {
+        model: User,
+        attributes: ['name'],
       }],
       raw: true,
     })
-    .then((places) => {
+    .then(results => {
       console.log(`Successfuly fetched followed user's places for user ${req.params.followedId}`);
-      res.status(200).send(places);
+      const data = results.map(result => {
+        const entry = {
+          userPlaceId: result.id,
+          userId: result.userId,
+          userName: result['user.name'],
+          placeId: result.placeId,
+          name: result['place.name'],
+          lat: result['place.lat'],
+          lng: result['place.lng'],
+          favsCount: result['place.favsCount'],
+          pinnedCount: result['place.pinnedCount'],
+          videoUrl: result.videoUrl,
+          imageUrl: result.imageUrl,
+          note: result.note,
+        };
+        return entry;
+      });
+      res.status(200).send(data);
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       res.status(500).send();
     });
