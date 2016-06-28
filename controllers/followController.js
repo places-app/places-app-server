@@ -1,5 +1,7 @@
 const Follow = require('../models').follow;
 const User = require('../models').user;
+const UserPlace = require('../models').userPlace;
+const Place = require('../models').place;
 
 module.exports = {
   followUser: (req, res) => {
@@ -11,15 +13,24 @@ module.exports = {
           followedId: req.body.followedId,
           following: true,
         },
+        raw: true,
       })
       .spread((follow, created) => {
-        console.log(created);
-        console.log(`Successfuly followed user ${follow.followedId} for user ${follow.userId}`);
-        res.send(200);
+        if (created) {
+          const followRaw = follow.get({
+            plain: true,
+          });
+          console.log(`Successfuly followed user ${followRaw.followedId} 
+            for user ${followRaw.userId}`);
+          res.status(200).send(followRaw);
+        } else {
+          console.log(`Successfuly followed user ${follow.followedId} for user ${follow.userId}`);
+          res.status(200).send(follow);
+        }
       })
       .catch((error) => {
-        // Add error handling and res status
         console.log(error);
+        res.status(500).send();
       });
     } else {
       // Follow.update({
@@ -62,13 +73,34 @@ module.exports = {
         raw: true,
       })
       .then((followedUsers) => {
-        console.log(`Successfuly fetched from Follows table for user ${req.params.userId}`);
-        res.send(followedUsers);
+        console.log(`Successfuly fetched followed users for user ${req.params.userId}`);
+        res.status(200).send(followedUsers);
       })
       .catch((error) => {
-        // Add error handling and res status
         console.log(error);
+        res.status(500).send();
       });
+    });
+  },
+  getFollowPlaces: (req, res) => {
+    UserPlace.findAll({
+      where: {
+        userId: req.params.followedId,
+      },
+      attributes: ['videoUrl', 'imageUrl', 'note'],
+      include: [{
+        model: Place,
+        attributes: ['id', 'name', 'lat', 'lng', 'favsCount', 'pinnedCount'],
+      }],
+      raw: true,
+    })
+    .then((places) => {
+      console.log(`Successfuly fetched followed user's places for user ${req.params.followedId}`);
+      res.status(200).send(places);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send();
     });
   },
 };
