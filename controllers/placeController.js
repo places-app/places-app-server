@@ -6,7 +6,7 @@ const _ = require('lodash');
 
 module.exports = {
   insertPlace: (req, res) => {
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const { name, lat, lng } = req.body.location;
     const note = req.body.note;
     console.log('USERID-----------', userId);
@@ -39,7 +39,7 @@ module.exports = {
   // /api/users/:userId/places return mine and my friends places
   getPlaces: (req, res) => {
     const reqUserId = req.params.userId;
-    return Follow.findAll({
+    Follow.findAll({
       where: { userId: reqUserId },
       raw: true, attributes: ['followedId'],
     })
@@ -56,8 +56,8 @@ module.exports = {
         });
         return Promise.all(promiseFuncs);
       })
-      .then((result) => {
-        const userPlaces = _.flattenDeep(result);
+      .then((results) => {
+        const userPlaces = _.flattenDeep(results);
         const promiseFuncs = userPlaces.map((userPlace) => {
           const query = {
             include: [{

@@ -28,6 +28,7 @@ passport.use(new FacebookTokenStrategy({
         email: profile.emails[0].value,
         name: profile.displayName,
         imageUrl: profile.photos[0].value,
+        repCount: Math.floor(Math.random() * 100),
         accessToken,
         refreshToken,
       };

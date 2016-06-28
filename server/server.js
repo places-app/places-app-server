@@ -26,7 +26,7 @@ app.get('/test', (req, res) => {
 
 // Wildcard route
 app.get('*', (req, res) => {
-  res.send(404);
+  res.sendStatus(404);
 });
 
 function startApp() {
