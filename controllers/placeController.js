@@ -7,16 +7,16 @@ const _ = require('lodash');
 module.exports = {
   insertPlace: (req, res) => {
     const userId = req.params.userId;
-    const { name, lat, lng } = req.body.location;
+    const { gPlaceId, name, lat, lng } = req.body.location;
     const note = req.body.note;
     console.log('USERID-----------', userId);
     console.log('data coming back from place post--------------', req.body);
-    console.log('data is--------------', name, lat, lng, note);
+    console.log('data is--------------', gPlaceId, name, lat, lng, note);
 
     Places
       .findOrCreate({
         where: { name },
-        defaults: { lat, lng },
+        defaults: { gPlaceId, lat, lng },
       })
       .spread((place, created) => {
         console.log(created);
