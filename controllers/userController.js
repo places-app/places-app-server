@@ -44,4 +44,35 @@ module.exports = {
         throw new Error(err);
       });
   },
+  addBot: (req, res) => {
+    const email = req.body.email;
+    const name = req.body.name;
+    const imageUrl = req.body.imageUrl;
+    const repCount = req.body.repCount;
+
+    const user = {
+      email,
+      name,
+      imageUrl,
+      repCount,
+    };
+
+    return User.create(user)
+      .then((createdUser) => res.send(JSON.stringify(createdUser.id)))
+      .catch((err) => {
+        throw new Error(err);
+      });
+  },
+  deleteBot: (req, res) => {
+    const userId = req.body.userId;
+    console.log('userID: ', userId)
+    return User.destroy({
+      where: {
+        id: userId,
+      },
+    })
+    .then(() => {
+      res.sendStatus(200);
+    });
+  },
 };

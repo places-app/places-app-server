@@ -5,6 +5,8 @@ const favController = require('../controllers/favsController');
 const multer = require('multer');
 const upload = multer({ dest: 'dist/videos/' });
 const locateController = require('../controllers/locateController');
+const userController = require('../controllers/userController');
+
 
 function ensureAuthenticated(req, res, next) {
   next(); // this line should be removed and the rest should be uncommented later
@@ -38,4 +40,8 @@ module.exports = (app) => {
 
   // locate
   app.post('/api/locate', locateController.getLocations);
+
+  // random bot user routes
+  app.post('/api/bot/add', userController.addBot);
+  app.post('/api/bot/delete', userController.deleteBot);
 };
