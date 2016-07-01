@@ -13,16 +13,19 @@ const _ = require('lodash');
 
 module.exports = {
   insertPlace: (req, res) => {
-    console.log('REQ--->', req);
     console.log('REQ.Body--->', req.body);
     const userId = req.params.userId;
     const { name, lat, lng, note, gPlaceId } = req.body;
     console.log('USERID-----------', userId);
     console.log('data coming back from place post--------------', req.body);
     console.log('data is--------------', name, lat, lng, note);
-    console.log('REQ FILE--->', req.file);
-
-    const videoUrl = `${process.env.PROTOCOL}${process.env.HOST}:${process.env.PORT}/${req.file.path}`;
+    if (req.file) {
+      console.log('REQ FILE--->', req.file);
+    }
+    let videoUrl = '';
+    if (req.file) {
+      videoUrl = `${process.env.PROTOCOL}${process.env.HOST}:${process.env.PORT}/${req.file.path}`;
+    }
     Places
       .findOrCreate({
         where: { name },
