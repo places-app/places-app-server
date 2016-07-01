@@ -19,16 +19,11 @@ function ensureAuthenticated(req, res, next) {
 module.exports = (app) => {
   // places
   app.get('/api/users/:userId/places', ensureAuthenticated, placeController.getPlaces);
-  // app.post('/api/users/:userId/places', ensureAuthenticated, placeController.insertPlace);
   app.post('/api/users/:userId/places',
     ensureAuthenticated, upload.single('file'),
     placeController.insertPlace
   );
 
-  // app.post('/profile', upload.single('avatar'), function (req, res, next) {
-  //   // req.file is the `avatar` file
-  //   // req.body will hold the text fields, if there were any
-  // });
   // users and follows
   app.get('/api/users/:userId/follows', ensureAuthenticated, followController.getFollows);
   app.post('/api/users/:userId/follows', ensureAuthenticated, followController.followUser);

@@ -23,8 +23,6 @@ module.exports = {
     console.log('REQ FILE--->', req.file);
 
     const videoUrl = `${process.env.PROTOCOL}${process.env.HOST}:${process.env.PORT}/${req.file.path}`;
-
-    console.log(videoUrl);
     Places
       .findOrCreate({
         where: { name },
@@ -32,7 +30,6 @@ module.exports = {
         defaults: { gPlaceId, lat, lng },
       })
       .spread((place, created) => {
-        console.log('place===2$$$>', place);
         console.log(created);
         UserPlace // --- upsert
           .findOrCreate({
