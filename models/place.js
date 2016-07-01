@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Place = sequelize.define('place', {
+    gPlaceId: DataTypes.STRING,
     name: DataTypes.STRING,
     lat: DataTypes.STRING,
     lng: DataTypes.STRING,

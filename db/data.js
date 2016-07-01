@@ -45,6 +45,7 @@ module.exports = [
   {
     place: [
       {
+        gPlaceId: 'ChIJp3CqeRd-j4ARYI0i8e_kGKY',
         name: 'Mission Dolores Park',
         lat: '37.760061',
         lng: '-122.427020',
@@ -52,6 +53,7 @@ module.exports = [
         pinnedCount: 2,
       },
       {
+        gPlaceId: 'ChIJNc25vYWAhYARppFtCl9Stb0',
         name: 'Hack Reactor',
         lat: '37.783533',
         lng: '-122.409311',
@@ -59,6 +61,7 @@ module.exports = [
         pinnedCount: 1,
       },
       {
+        gPlaceId: 'ChIJ_Vae_ISAhYARD3_cAM1pxlc',
         name: 'Chai Bar',
         lat: '37.7803359',
         lng: '-122.409486',
@@ -104,7 +107,7 @@ module.exports = [
       {
         starred: true,
         placeId: 1,
-        userId: 1,
+        userId: 2,
         userPlaceId: 2,
       },
       {
