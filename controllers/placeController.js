@@ -1,3 +1,10 @@
+// Load environment variables
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config({ path: './env/development.env' });
+} else {
+  require('dotenv').config({ path: './env/production.env' });
+}
+
 const Places = require('../models').place;
 const UserPlace = require('../models').userPlace;
 const User = require('../models').user;
@@ -6,24 +13,31 @@ const _ = require('lodash');
 
 module.exports = {
   insertPlace: (req, res) => {
+    console.log('REQ--->', req);
+    console.log('REQ.Body--->', req.body);
     const userId = req.params.userId;
-    const { gPlaceId, name, lat, lng } = req.body.location;
-    const note = req.body.note;
+    const { name, lat, lng, note, gPlaceId } = req.body;
     console.log('USERID-----------', userId);
     console.log('data coming back from place post--------------', req.body);
-    console.log('data is--------------', gPlaceId, name, lat, lng, note);
+    console.log('data is--------------', name, lat, lng, note);
+    console.log('REQ FILE--->', req.file);
 
+    const videoUrl = `${process.env.PROTOCOL}${process.env.HOST}:${process.env.PORT}/${req.file.path}`;
+
+    console.log(videoUrl);
     Places
       .findOrCreate({
         where: { name },
+        raw: true,
         defaults: { gPlaceId, lat, lng },
       })
       .spread((place, created) => {
+        console.log('place===2$$$>', place);
         console.log(created);
         UserPlace // --- upsert
           .findOrCreate({
-            where: { placeId: place.id },
-            defaults: { userId, note, videoUrl: '', pictureUrl: '' },
+            where: { placeId: place.id, userId },
+            defaults: { placeId: place.id, userId, note, videoUrl },
           })
           .spread((userPlace, newEntry) => {
             return newEntry ? res.send(201) : res.send(202);

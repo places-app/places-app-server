@@ -5,6 +5,7 @@ if (process.env.NODE_ENV === 'development') {
   require('dotenv').config({ path: './env/production.env' });
 }
 
+const path = require('path');
 const express = require('express');
 const app = express();
 const db = require('../models');
@@ -23,6 +24,8 @@ app.get('/test', (req, res) => {
   console.log(req.user);
   res.send('done').end();
 });
+
+app.use('/dist', express.static(path.join(`${__dirname}./../dist`)));
 
 // Wildcard route
 app.get('*', (req, res) => {
