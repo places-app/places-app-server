@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const serverUrl = 'http://localhost:3333/api/getLocations';
+const serverUrl = 'http://10.8.28.177:3333/api/getLocations';
 
 module.exports = {
   getLocations: (req, res) => {
