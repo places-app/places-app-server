@@ -10,6 +10,7 @@ const UserPlace = require('../models').userPlace;
 const User = require('../models').user;
 const Follow = require('../models').follow;
 const _ = require('lodash');
+const axios = require('axios');
 
 module.exports = {
   insertPlace: (req, res) => {
@@ -40,9 +41,31 @@ module.exports = {
             defaults: { placeId: place.id, userId, note, videoUrl },
           })
           .spread((userPlace, newEntry) => {
-            return newEntry ? res.send(201) : res.send(202);
-          }
-          );
+            console.log('BASE URL', process.env.VIDEO_SERVICE);
+            // if newEntry && videoUrl
+            if (videoUrl) {
+              console.log('userPlace ID', userPlace.id);
+              console.log('VIDEO URL', videoUrl);
+              // send axios get req to video service
+              axios({
+                url: '/api/videos',
+                method: 'post',
+                baseURL: process.env.VIDEO_SERVICE,
+                withCredentials: true,
+                data: {
+                  userPlaceId: userPlace.id,
+                  videoUrl,
+                },
+              })
+              .then((response) => {
+                // console.log('Response from the video service:', response);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+            }
+            return newEntry ? res.sendStatus(201) : res.sendStatus(202);
+          });
       });
   },
 

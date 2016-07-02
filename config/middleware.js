@@ -2,8 +2,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passportConfig = require('./passport');
-const path = require('path');
-const express = require('express');
 
 module.exports = (app) => {
   app.use((req, res, next) => {
@@ -15,8 +13,8 @@ module.exports = (app) => {
     next();
   });
   app.use(logger('dev'));
-  app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
   app.use(cookieParser());
   passportConfig(app);
 };
