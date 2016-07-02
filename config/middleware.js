@@ -2,6 +2,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passportConfig = require('./passport');
+const path = require('path');
+const express = require('express');
 
 module.exports = (app) => {
   app.use((req, res, next) => {
