@@ -93,7 +93,7 @@ module.exports = {
         where: {
           id: allFollows,
         },
-        attributes: ['id', 'name', 'currLat', 'currLng', 'prevLat', 'prevLng', 'repCount'],
+        attributes: ['id', 'name', 'repCount', 'imageUrl'],
         raw: true,
       })
       .then(followedUsers => {
