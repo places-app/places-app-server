@@ -1,10 +1,3 @@
-// Load environment variables
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config({ path: './env/development.env' });
-} else {
-  require('dotenv').config({ path: './env/production.env' });
-}
-
 const Places = require('../models').place;
 const UserPlace = require('../models').userPlace;
 const User = require('../models').user;
@@ -14,14 +7,11 @@ const axios = require('axios');
 
 module.exports = {
   insertPlace: (req, res) => {
-    console.log('REQ.Body--->', req.body);
     const userId = req.params.userId;
     const { name, lat, lng, note, gPlaceId } = req.body;
-    console.log('USERID-----------', userId);
-    console.log('data coming back from place post--------------', req.body);
-    console.log('data is--------------', name, lat, lng, note);
+    console.log('incoming place data:', name, lat, lng, note);
     if (req.file) {
-      console.log('REQ FILE--->', req.file);
+      console.log('req file:', req.file);
     }
     let videoUrl = '';
     if (req.file) {
@@ -35,18 +25,16 @@ module.exports = {
       })
       .spread((place, created) => {
         console.log(created);
-        UserPlace // --- upsert
+        UserPlace
           .findOrCreate({
             where: { placeId: place.id, userId },
             defaults: { placeId: place.id, userId, note, videoUrl },
           })
           .spread((userPlace, newEntry) => {
-            console.log('BASE URL', process.env.VIDEO_SERVICE);
             // if newEntry && videoUrl
             if (videoUrl) {
-              console.log('userPlace ID', userPlace.id);
-              console.log('VIDEO URL', videoUrl);
-              // send axios get req to video service
+              // send req to video service for uploading to s3
+              console.log('sending req to video service.');
               axios({
                 url: '/api/videos',
                 method: 'post',
@@ -58,10 +46,10 @@ module.exports = {
                 },
               })
               .then((response) => {
-                // console.log('Response from the video service:', response);
+                console.log('response status from video service:', response.status);
               })
               .catch((error) => {
-                console.log(error);
+                throw new Error(error);
               });
             }
             return newEntry ? res.sendStatus(201) : res.sendStatus(202);
