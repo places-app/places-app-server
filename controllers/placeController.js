@@ -100,6 +100,7 @@ module.exports = {
             userPlaceId: result.id,
             userId: result.userId,
             userName: result['user.name'],
+            userImageUrl: result['user.imageUrl'],
             placeId: result.placeId,
             name: result['place.name'],
             lat: result['place.lat'],
