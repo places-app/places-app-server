@@ -154,4 +154,40 @@ module.exports = [
       },
     ],
   },
+  {
+    type: [
+      {
+        name: 'park',
+      },
+      {
+        name: 'store',
+      },
+      {
+        name: 'shopping_mall',
+      },
+      {
+        name: 'bar',
+      },
+    ],
+  },
+  {
+    placeType: [
+      {
+        placeId: 1,
+        typeId: 1,
+      },
+      {
+        placeId: 2,
+        typeId: 3,
+      },
+      {
+        placeId: 3,
+        typeId: 2,
+      },
+      {
+        placeId: 3,
+        typeId: 4,
+      },
+    ],
+  },
 ];
