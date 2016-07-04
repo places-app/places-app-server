@@ -8,7 +8,6 @@ const upload = multer({ dest: 'dist/videos/' });
 const locateController = require('../controllers/locateController');
 const userController = require('../controllers/userController');
 
-
 function ensureAuthenticated(req, res, next) {
   next(); // this line should be removed and the rest should be uncommented later
   // I have commented this out so we can send requests without being logged-in for now
