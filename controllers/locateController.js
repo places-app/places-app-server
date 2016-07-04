@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // digital ocean deployed IP
-const serverUrl = 'http://162.243.137.169:3333/api/getLocations';
+const serverUrl = `http://${process.env.LOCATION_HOST}:${process.env.LOCATION_PORT}/api/getLocations`;
 
 module.exports = {
   getLocations: (req, res) => {
