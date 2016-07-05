@@ -4,7 +4,8 @@ const User = require('../models').user;
 const Follow = require('../models').follow;
 const _ = require('lodash');
 const axios = require('axios');
-
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 module.exports = {
   insertPlace: (req, res) => {
     const userId = req.params.userId;
@@ -56,7 +57,6 @@ module.exports = {
           });
       });
   },
-
   // /api/users/:userId/places return mine and my friends places
   getPlaces: (req, res) => {
     const reqUserId = req.params.userId;
@@ -110,6 +110,7 @@ module.exports = {
             videoUrl: result.videoUrl,
             imageUrl: result.imageUrl,
             note: result.note,
+            createdAt: `${monthNames[result.createdAt.getMonth()]}-${result.createdAt.getDate()}`,
           };
           return entry;
         });
