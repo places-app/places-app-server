@@ -9,10 +9,9 @@ const appUrl = `${process.env.PROTOCOL}${process.env.HOST}:${process.env.PORT}`;
 request = request(appUrl);
 
 
-describe('Routing', function() {
-  
-  before(function(done) {
-    //create the test data
+describe('Routing', function () {
+  before(function (done) {
+    // create the test data
     const name = 'Adam Lessen\'s Delicious Burgers';
     const userId = 1;
     const lng = 50;
@@ -23,8 +22,7 @@ describe('Routing', function() {
         raw: true,
         defaults: { lat, lng },
       })
-      .spread((place, created) => {
-        console.log('created?', created);
+      .spread((place) => {
         return db.userPlace // --- upsert
           .destroy({
             where: {
@@ -32,49 +30,47 @@ describe('Routing', function() {
               userId,
             },
           })
-        .then(function(affectedRows) {
-          console.log('in beginning------', affectedRows);
+        .then(function (affectedRows) {
+          console.log('Deleted rows before: ', affectedRows.length);
           done();
         })
         .catch(done);
       });
   });
 
-  after(function(done) {
-    // delete the test data 
-    // go in places and delete that test id
+  after(function (done) {
+    // delete the test data
 
     const name = 'Adam Lessen\'s Delicious Burgers';
     db.place
       .findOne({
         where: { name },
       })
-      .then(function(place) {
+      .then(function (place) {
         return db.userPlace.destroy({
           where: {
             placeId: place.id,
           },
         });
       })
-      .then(function(affectedRows) {
+      .then(function (affectedRows) {
+        console.log('Deleted rows after: ', affectedRows.length);
         done();
       })
       .catch(done);
     done();
   });
 
-  describe('Post places', function() {
-
-    const post = { name: 'Adam Lessen\'s Delicious Burgers',
+  describe('Post places', function () {
+    let post = { name: 'Adam Lessen\'s Delicious Burgers',
     lat: 40, lng: 50, note: 'OMG so gooood!!!!' };
 
-    it('should send back a 201 for a new place', function(done) {
-   
+    it('should send back a 201 for a new place', function (done) {
       request
         .post('/api/users/1/places')
         .send(post)
           // end handles the response
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) {
             throw err;
           }
@@ -84,19 +80,18 @@ describe('Routing', function() {
         });
     });
 
-    it('new place should be stored in userPlaces with the correct note', function(done) {
-          // query data base to see if that entry exists and verify that the name is the name
+    it('new place should be stored in userPlaces with the correct note', function (done) {
+      // query data base to see if entry exists and verify note and uniqueness
       db.place
         .findOne({
-          where: { name: post.name }
+          where: { name: post.name },
         })
-        .then(function(place){
+        .then(function (place) {
           return db.userPlace.findAll({
-            where: { placeId: place.id }
-          }); 
+            where: { placeId: place.id },
+          });
         })
-        .then(function(places){
-          // console.log('places for user 1 ', places)
+        .then(function (places) {
           places.should.have.length(1);
           places[0].note.should.equal('OMG so gooood!!!!');
           done();
@@ -104,17 +99,16 @@ describe('Routing', function() {
         .catch(done);
     });
 
-    it('should send back 202 if place exists already', function(done) {
-      let post = {
-        name: 'Adam Lessen\'s Delicious Burgers', lat: 40, lng: 50 ,
+    it('should send back 202 if user has already pinned place', function (done) {
+      post = {
+        name: 'Adam Lessen\'s Delicious Burgers', lat: 40, lng: 50,
         note: 'Friez were the bomb!!!!',
       };
-    
       request
         .post('/api/users/1/places')
         .send(post)
           // end handles the response
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) {
             throw err;
           }
