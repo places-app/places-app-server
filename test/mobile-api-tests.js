@@ -44,21 +44,22 @@ describe('Routing', function() {
     // delete the test data 
     // go in places and delete that test id
 
-    // const name = 'Adam Lessen\'s Delicious Burgers';
-    // db.place
-    //   .find({where: name })
-    //   .then(function(place) {
-    //     return db.userPlace.destory({
-    //       where: {
-    //         placeId: place.id,
-    //       },
-    //     });
-    //   })
-    //   .then(function(affectedRows) {
-    //     console.log('affectedRows legnth', affectedRows.length);
-    //     done();
-    //   })
-    //   .catch(done);
+    const name = 'Adam Lessen\'s Delicious Burgers';
+    db.place
+      .findOne({
+        where: { name },
+      })
+      .then(function(place) {
+        return db.userPlace.destroy({
+          where: {
+            placeId: place.id,
+          },
+        });
+      })
+      .then(function(affectedRows) {
+        done();
+      })
+      .catch(done);
     done();
   });
 
@@ -121,18 +122,6 @@ describe('Routing', function() {
           res.status.should.equal(202);
           done();
         });
-          // query data base to see there is only 1 entry with that place id
-        //   db.place.findAll({
-        //     where: {
-        //       placeId: 5
-        //     }
-        //   })
-        //   .then(function(places){
-        //     places.should.have.length(1);
-        //     done();
-        //   })
-        //   .catch(done)
-        //   // query to make sure the place got updated
     });
   });
 });
