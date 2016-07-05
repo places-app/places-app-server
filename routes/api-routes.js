@@ -2,6 +2,7 @@ const placeController = require('../controllers/placeController');
 const followController = require('../controllers/followController');
 const usersController = require('../controllers/usersController');
 const favController = require('../controllers/favsController');
+const userPlaceController = require('../controllers/userPlaceController');
 const multer = require('multer');
 const upload = multer({ dest: 'dist/videos/' });
 const locateController = require('../controllers/locateController');
@@ -43,4 +44,7 @@ module.exports = (app) => {
   // random bot user routes
   app.post('/api/bot/add', userController.addBot);
   app.post('/api/bot/delete', userController.deleteBot);
+
+  // user places
+  app.put('/api/userplaces', userPlaceController.updateUrl);
 };
