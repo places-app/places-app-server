@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
           { as: 'user', foreignKey: { name: 'userId', allowNull: false } }
         );
         Place.hasMany(models.fav);
+        Place.belongsToMany(models.type,
+          { through: { model: 'placeType', unique: false } },
+          { as: 'type', foreignKey: { name: 'typeId', allowNull: false } }
+        );
       },
     },
   });
