@@ -17,8 +17,7 @@ module.exports = {
         include: [{
           model: User,
           as: 'user',
-          attributes: ['id', 'name', 'currLat', 'currLng',
-          'prevLat', 'prevLng', 'repCount'],
+          attributes: ['id', 'name', 'imageUrl', 'repCount'],
         }],
         // only for find
         raw: true,
@@ -34,8 +33,7 @@ module.exports = {
             where: {
               id: followRaw.followedId,
             },
-            attributes: ['id', 'name', 'currLat', 'currLng',
-            'prevLat', 'prevLng', 'repCount'],
+            attributes: ['id', 'name', 'imageUrl', 'repCount'],
             raw: true,
           })
           .then(followed => {
@@ -130,6 +128,7 @@ module.exports = {
           userId: result.userId,
           userName: result['user.name'],
           placeId: result.placeId,
+          userImageUrl: result['user.imageUrl'],
           name: result['place.name'],
           lat: result['place.lat'],
           lng: result['place.lng'],
