@@ -23,6 +23,7 @@ describe('Routing', function () {
         defaults: { lat, lng },
       })
       .spread((place) => {
+        console.log('place id before-------------: ', place.id);
         return db.userPlace // --- upsert
           .destroy({
             where: {
@@ -31,7 +32,7 @@ describe('Routing', function () {
             },
           })
         .then(function (affectedRows) {
-          console.log('Deleted rows before: ', affectedRows.length);
+          console.log('Deleted rows before: ', affectedRows);
           done();
         })
         .catch(done);
@@ -42,6 +43,7 @@ describe('Routing', function () {
     // delete the test data
 
     const name = 'Adam Lessen\'s Delicious Burgers';
+    const userId = 1;
     db.place
       .findOne({
         where: { name },
@@ -50,15 +52,15 @@ describe('Routing', function () {
         return db.userPlace.destroy({
           where: {
             placeId: place.id,
+            userId,
           },
         });
       })
       .then(function (affectedRows) {
-        console.log('Deleted rows after: ', affectedRows.length);
+        console.log('Deleted rows after: ', affectedRows);
         done();
       })
       .catch(done);
-    done();
   });
 
   describe('Post places', function () {
