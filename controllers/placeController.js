@@ -49,7 +49,7 @@ module.exports = {
                 console.log('response status from video service:', response.status);
               })
               .catch((error) => {
-                throw new Error(error);
+                console.log(error);
               });
             }
             return newEntry ? res.sendStatus(201) : res.sendStatus(202);
@@ -116,7 +116,7 @@ module.exports = {
         res.end(JSON.stringify(data));
       })
       .catch((err) => {
-        throw new Error(err);
+        console.log(err);
       });
   },
 };
