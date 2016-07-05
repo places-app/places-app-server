@@ -23,7 +23,6 @@ describe('Routing', function () {
         defaults: { lat, lng },
       })
       .spread((place) => {
-        console.log('place id before-------------: ', place.id);
         return db.userPlace // --- upsert
           .destroy({
             where: {
