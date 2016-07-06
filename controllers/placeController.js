@@ -9,8 +9,8 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 module.exports = {
   insertPlace: (req, res) => {
     const userId = req.params.userId;
-    const { name, lat, lng, note, gPlaceId } = req.body;
-    console.log('incoming place data:', name, lat, lng, note);
+    const { name, lat, lng, note, gPlaceId, imageUrl } = req.body;
+    console.log('incoming place data:', name, lat, lng, note, imageUrl);
     if (req.file) {
       console.log('req file:', req.file);
     }
@@ -29,7 +29,7 @@ module.exports = {
         UserPlace
           .findOrCreate({
             where: { placeId: place.id, userId },
-            defaults: { placeId: place.id, userId, note, videoUrl },
+            defaults: { placeId: place.id, userId, note, videoUrl, imageUrl },
           })
           .spread((userPlace, newEntry) => {
             // if newEntry && videoUrl
