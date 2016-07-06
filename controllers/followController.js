@@ -2,6 +2,8 @@ const Follow = require('../models').follow;
 const User = require('../models').user;
 const UserPlace = require('../models').userPlace;
 const Place = require('../models').place;
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 module.exports = {
   followUser: (req, res) => {
@@ -120,14 +122,14 @@ module.exports = {
       where: {
         userId: req.params.followedId,
       },
-      attributes: ['id', 'userId', 'placeId', 'videoUrl', 'imageUrl', 'note'],
+      attributes: ['id', 'userId', 'placeId', 'videoUrl', 'imageUrl', 'note', 'createdAt'],
       include: [{
         model: Place,
         attributes: ['name', 'lat', 'lng', 'favsCount', 'pinnedCount'],
       },
       {
         model: User,
-        attributes: ['name'],
+        attributes: ['name', 'imageUrl'],
       }],
       raw: true,
     })
@@ -138,8 +140,8 @@ module.exports = {
           userPlaceId: result.id,
           userId: result.userId,
           userName: result['user.name'],
-          placeId: result.placeId,
           userImageUrl: result['user.imageUrl'],
+          placeId: result.placeId,
           name: result['place.name'],
           lat: result['place.lat'],
           lng: result['place.lng'],
@@ -148,6 +150,7 @@ module.exports = {
           videoUrl: result.videoUrl,
           imageUrl: result.imageUrl,
           note: result.note,
+          createdAt: `${monthNames[result.createdAt.getMonth()]}-${result.createdAt.getDate()}`,
         };
         return entry;
       });
