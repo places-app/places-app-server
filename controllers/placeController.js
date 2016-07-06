@@ -34,6 +34,7 @@ module.exports = {
           .spread((userPlace, newEntry) => {
             // if newEntry && videoUrl
             if (videoUrl) {
+              console.log('req.file', req.file);
               // send req to video service for uploading to s3
               console.log('sending req to video service.');
               axios({

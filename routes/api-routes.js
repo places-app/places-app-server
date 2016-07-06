@@ -3,10 +3,23 @@ const followController = require('../controllers/followController');
 const usersController = require('../controllers/usersController');
 const favController = require('../controllers/favsController');
 const userPlaceController = require('../controllers/userPlaceController');
-const multer = require('multer');
-const upload = multer({ dest: 'dist/videos/' });
 const locateController = require('../controllers/locateController');
 const userController = require('../controllers/userController');
+
+// multer file handling
+const multer = require('multer');
+const crypto = require('crypto');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'dist/videos');
+  },
+  filename: (req, file, cb) => {
+    crypto.pseudoRandomBytes(16, (err, raw) => {
+      cb(null, `${raw.toString('hex')}${Date.now()}.mov`);
+    });
+  },
+});
+const upload = multer({ storage });
 
 function ensureAuthenticated(req, res, next) {
   next(); // this line should be removed and the rest should be uncommented later
