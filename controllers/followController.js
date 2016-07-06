@@ -90,7 +90,6 @@ module.exports = {
     Follow.findAll({
       where: {
         userId: req.params.userId,
-        following: true,
       },
       raw: true,
     })
@@ -103,7 +102,7 @@ module.exports = {
         where: {
           id: allFollows,
         },
-        attributes: ['id', 'name', 'repCount', 'imageUrl'],
+        attributes: ['id', 'email', 'name', 'imageUrl', 'repCount'],
         raw: true,
       })
       .then(followedUsers => {
