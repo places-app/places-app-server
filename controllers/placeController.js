@@ -14,7 +14,7 @@ module.exports = {
     if (req.file) {
       console.log('req file:', req.file);
     }
-    let videoUrl = '';
+    let videoUrl = null;
     if (req.file) {
       videoUrl = `${process.env.PROTOCOL}${process.env.HOST}:${process.env.PORT}/${req.file.path}`;
     }
