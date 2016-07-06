@@ -5,74 +5,86 @@ const Place = require('../models').place;
 
 module.exports = {
   followUser: (req, res) => {
-    // add unfollow
-    if (!req.body.followed) {
-      Follow.findOrCreate({
-        where: {
-          userId: req.params.userId,
-          followedId: req.body.followedId,
-          following: true,
-        },
-        // only for find <-- remove
-        include: [{
-          model: User,
-          as: 'user',
-          attributes: ['id', 'name', 'imageUrl', 'repCount'],
-        }],
-        // only for find
-        raw: true,
-      })
-      .spread((follow, created) => {
-        if (created) {
-          const followRaw = follow.get({
-            plain: true,
-          });
-          console.log(`Successfuly followed user ${followRaw.followedId} 
-            for user ${followRaw.userId}`);
+    Follow.findOrCreate({
+      where: {
+        userId: req.params.userId,
+        followedId: req.body.followedId,
+      },
+      defaults: {
+        userId: req.params.userId,
+        followedId: req.body.followedId,
+        following: true,
+      },
+      include: [{
+        model: User,
+        as: 'user',
+        attributes: ['id', 'email', 'name', 'imageUrl', 'repCount'],
+      }],
+      raw: true,
+    })
+    .spread((follow, created) => {
+      if (created) {
+        const followRaw = follow.get({
+          plain: true,
+        });
+        console.log(`Successfuly followed user ${followRaw.followedId} for user ${followRaw.userId}`);
+        User.find({
+          where: {
+            id: followRaw.followedId,
+          },
+          attributes: ['id', 'email', 'name', 'imageUrl', 'repCount'],
+          raw: true,
+        })
+        .then(followed => {
+          res.status(200).send(followed);
+        })
+        .catch(error => {
+          console.log(error);
+          res.status(500).send();
+        });
+      } else {
+        const userId = req.params.userId;
+        const followedId = req.body.followedId;
+        Follow.update({
+          following: !req.body.followed,
+        }, {
+          where: {
+            userId,
+            followedId,
+          },
+        })
+        .then(result => {
+          console.log('Number of rows affected ', result);
           User.find({
             where: {
-              id: followRaw.followedId,
+              id: followedId,
             },
-            attributes: ['id', 'name', 'imageUrl', 'repCount'],
+            attributes: ['id', 'email', 'name', 'imageUrl', 'repCount'],
             raw: true,
           })
-          .then(followed => {
-            res.status(200).send(followed);
+          .then(user => {
+            let followLog = 'followed';
+            if (req.body.followed) {
+              followLog = 'unfollowed';
+            }
+            console.log(`Successfuly ${followLog} user ${user.id} for user ${userId}`);
+            res.status(200).send(user);
           })
           .catch(error => {
+            // Add error handling and res status
             console.log(error);
-            res.status(500).send();
           });
-        // only for find <-- remove when unfollow is implemented
-        } else {
-          console.log(`Successfuly followed user ${follow.followedId} for user ${follow.userId}`);
-          console.log(follow);
-          res.status(200).send(follow);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        res.status(500).send();
-      });
-    } else {
-      // Follow.update({
-      //   following: false,
-      //   where: {
-      //     userId: req.params.userId,
-      //     followedId: req.body.followedId,
-      //     following: true,
-      //   },
-      // })
-      // .then((unfollow) => {
-      //   console.log(`Successfuly unfollowed user ${unfollow.followedId}
-      //     for user ${unfollow.userId}`);
-      //   res.send(200);
-      // })
-      // .catch((error) => {
-      //   // Add error handling and res status
-      //   console.log(error);
-      // });
-    }
+        })
+        .catch(error => {
+          // Add error handling and res status
+          console.log(error);
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send();
+    });
   },
   getFollows: (req, res) => {
     Follow.findAll({
