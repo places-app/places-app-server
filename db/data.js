@@ -95,7 +95,7 @@ module.exports = [
       },
       {
         note: 'Learn software engineering at HR.',
-        imageUrl: 'http://static1.squarespace.com/static/522a22cbe4b04681b0bff826/t/551c5d9de4b0a9acf950d931/1427922333851/Coder-photo.jpg',
+        imageUrl: '',
         videoUrl: 'https://fpdl.vimeocdn.com/vimeo-prod-skyfire-std-us/01/1149/6/155747455/482952492.mp4?token=577642ac_0xea0a6d005635a0cf8f062f7829cdac2a63c64b39',
         userId: 3,
         placeId: 2,
