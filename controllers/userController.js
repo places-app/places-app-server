@@ -11,14 +11,14 @@ module.exports = {
         return false;
       })
       .catch((err) => {
-        throw new Error(err);
+        console.log(err);
       });
   },
   addUser: function addUser(user) {
     return User.create(user)
       .then((createdUser) => createdUser)
       .catch((err) => {
-        throw new Error(err);
+        console.log(err);
       });
   },
   getLoginPayload: function getLoginPayload(req, res) {
@@ -41,7 +41,8 @@ module.exports = {
         }
       })
       .catch((err) => {
-        throw new Error(err);
+        console.log(err);
+        res.sendStatus(500);
       });
   },
   addBot: (req, res) => {
@@ -60,12 +61,13 @@ module.exports = {
     return User.create(user)
       .then((createdUser) => res.send(JSON.stringify(createdUser.id)))
       .catch((err) => {
-        throw new Error(err);
+        console.log(err);
+        res.sendStatus(500);
       });
   },
   deleteBot: (req, res) => {
     const userId = req.body.userId;
-    console.log('userID: ', userId)
+    console.log('userID: ', userId);
     return User.destroy({
       where: {
         id: userId,
