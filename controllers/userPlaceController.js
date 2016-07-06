@@ -14,6 +14,7 @@ module.exports = {
     UserPlace.findById(userPlaceId)
       .then((userPlace) => {
         oldUrl = userPlace.videoUrl;
+        console.log('old video url:', oldUrl);
         return new Promise((resolve) =>
           resolve(userPlace.update({ videoUrl }))
         );
@@ -27,13 +28,13 @@ module.exports = {
             throw new Error(err);
           }
           console.log('video file was deleted.', filePath);
+          res.sendStatus(200);
+          res.end('video url was updated.');
         });
       })
       .catch((err) => {
-        throw new Error(err);
+        console.log(err);
+        res.sendStatus(500);
       });
-
-    res.sendStatus(200);
-    res.end('video url was updated.');
   },
 };
