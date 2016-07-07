@@ -132,6 +132,7 @@ module.exports = {
         attributes: ['name', 'imageUrl'],
       }],
       raw: true,
+      order: [['createdAt', 'DESC']],
     })
     .then(results => {
       console.log(`Successfuly fetched followed user's places for user ${req.params.followedId}`);
