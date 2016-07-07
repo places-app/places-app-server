@@ -59,6 +59,9 @@ module.exports = {
       });
   },
   // /api/users/:userId/places return mine and my friends places
+
+  // i want to sort userplaces by date
+
   getPlaces: (req, res) => {
     const reqUserId = req.params.userId;
     Follow.findAll({
@@ -72,7 +75,7 @@ module.exports = {
         const promiseFuncs = followedIds.map((userId) => {
           const query = {
             where: { userId }, raw: true,
-            attributes: ['userId', 'placeId'],
+            attributes: ['userId', 'placeId', 'createdAt'],
           };
           return UserPlace.findAll(query);
         });
@@ -80,7 +83,11 @@ module.exports = {
       })
       .then((results) => {
         const userPlaces = _.flattenDeep(results);
-        const promiseFuncs = userPlaces.map((userPlace) => {
+        // order by reverse chronological date
+        const orderedUserPlaces = userPlaces.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        const promiseFuncs = orderedUserPlaces.map((userPlace) => {
           const query = {
             include: [{
               model: User,
