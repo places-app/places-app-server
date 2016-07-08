@@ -59,19 +59,19 @@ module.exports = {
       });
   },
   // /api/users/:userId/places return mine and my friends places
-
-  // i want to sort userplaces by date
-
   getPlaces: (req, res) => {
     const reqUserId = req.params.userId;
+    // get all of the user's follows userId
     Follow.findAll({
       where: { userId: reqUserId },
       raw: true, attributes: ['followedId'],
     })
       .then((users) => {
         const followedIds = users.map((obj) => obj.followedId);
-        // add current usersId
+        // add current users userId
         followedIds.push(parseInt(reqUserId, 10));
+        // build an array of promise returning functions
+        // one function for each user
         const promiseFuncs = followedIds.map((userId) => {
           const query = {
             where: { userId }, raw: true,
@@ -87,6 +87,8 @@ module.exports = {
         const orderedUserPlaces = userPlaces.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
+        // build an array of promise returning functions
+        // each have with a different pair of userId and placeId
         const promiseFuncs = orderedUserPlaces.map((userPlace) => {
           const query = {
             include: [{
@@ -100,6 +102,7 @@ module.exports = {
           };
           return UserPlace.findOne(query);
         });
+        // execute the list of promises and return them
         return Promise.all(promiseFuncs);
       })
       .then((results) => {
