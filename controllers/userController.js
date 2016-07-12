@@ -22,7 +22,12 @@ module.exports = {
       });
   },
   getLoginPayload: function getLoginPayload(req, res) {
-    const fbId = req.user.fbId;
+    let fbId;
+    if (req.url === '/guest') {
+      fbId = process.env.GUEST_FB;
+    } else {
+      fbId = req.user.fbId;
+    }
     User.findOne({ where: { fbId }, raw: true })
       .then((user) => {
         if (user) {

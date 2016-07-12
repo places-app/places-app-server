@@ -4,7 +4,12 @@ const Follow = db.follow;
 
 module.exports = {
   getUsers: function getUsers(req, res) {
-    const userId = req.user.id;
+    let userId;
+    if (req.user) {
+      userId = req.user.id;
+    } else {
+      userId = process.env.GUEST_ID;
+    }
     return Follow.findAll({
       attributes: ['followedId'],
       where: {

@@ -6,8 +6,8 @@ module.exports = (app) => {
     passport.authenticate('facebook-token'),
     userController.getLoginPayload
   );
+  app.get('/guest', userController.getLoginPayload);
   app.get('/logout', (req, res) => {
-    console.log('Logging out...: ');
     req.session.destroy();
     res.sendStatus(200);
   });
